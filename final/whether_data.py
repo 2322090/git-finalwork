@@ -45,7 +45,20 @@ sql_create_table_whether = '''
 '''
 # SQLを実行する
 cur.execute(sql_create_table_whether)
-# 
-cur.executemany('INSERT INTO tem (temperature) VALUES (?)', w_list)
+# スクレイピングしたデータを入れる
+cur.executemany('INSERT INTO tem VALUES (?)', w_list)
+# DBへの接続を閉じる
+con.close()
+
+# DBに接続する
+con = sqlite3.connect('whether_db.sqlite')
+# SQLを実行するためのオブジェクトを取得
+cur = con.cursor()
+# SELECT * FROM テーブル名;
+sql_select = 'SELECT * FROM tem;'
+# SQLを実行する
+cur.execute(sql_select)
+for r in cur:
+  print(r)
 # DBへの接続を閉じる
 con.close()
