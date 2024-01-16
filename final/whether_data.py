@@ -35,8 +35,10 @@ print(w_list)
 
 # DBに接続
 con = sqlite3.connect('whether_db.sqlite')
+
 # SQLを実行するためのオブジェクトを取得
 cur = con.cursor()
+
 # テーブルを作成する
 sql_create_table_whether = '''
     CREATE TABLE IF NOT EXISTS tem(
@@ -45,10 +47,19 @@ sql_create_table_whether = '''
 '''
 # SQLを実行する
 cur.execute(sql_create_table_whether)
+
+
 # スクレイピングしたデータを入れる
-cur.executemany('INSERT INTO tem VALUES (?)', w_list)
+sql_insert_one = "INSERT INTO tem VALUES (?);"
+
+for row in w_list:
+    cur.execute(sql_insert_one, row)
+
+con.commit()
+
 # DBへの接続を閉じる
 con.close()
+
 
 # DBに接続する
 con = sqlite3.connect('whether_db.sqlite')
