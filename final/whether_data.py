@@ -32,3 +32,20 @@ for temp in min_temperatures:
     w_list.append([temp])
 
 print(w_list)
+
+# DBに接続
+con = sqlite3.connect('whether_db.sqlite')
+# SQLを実行するためのオブジェクトを取得
+cur = con.cursor()
+# テーブルを作成する
+sql_create_table_whether = '''
+    CREATE TABLE IF NOT EXISTS tem(
+        temperature real
+        );
+'''
+# SQLを実行する
+cur.execute(sql_create_table_whether)
+# 
+cur.executemany('INSERT INTO tem (temperature) VALUES (?)', w_list)
+# DBへの接続を閉じる
+con.close()
