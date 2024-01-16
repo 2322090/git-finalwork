@@ -8,14 +8,19 @@ url = "https://www.data.jma.go.jp/obd/stats/etrn/view/daily_s1.php?prec_no=44&bl
 
 d_list = []
 
-def collect_links(url):
-    r = requests.get(url)
-    soup = BeautifulSoup(r.text, 'html.parser')
+r = requests.get(url)
+r.raise_
+soup = BeautifulSoup(r.text, 'html.parser')
 
-    whether = soup.find_all('td', class_='data_0_0')
-    whether_texts = [element.get_text(strip=True) for element in whether]
+rows = soup.find_all('tr')
+for row in rows:
+    cells = row.find_all('td')
 
-    for whether in zip(whether_texts):
-        d_list.append([whether])
+    if len(cells) > 8:
+        high_temp = cells[8]
+        print(high_temp.get_text())
+
+for whether in zip(high_temp):
+    d_list.append([high_temp])
 
 print(d_list)
